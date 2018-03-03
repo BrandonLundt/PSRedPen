@@ -1,0 +1,9 @@
+{
+    "editor.insertSpaces": false,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "files.defaultLanguage": "powershell",
+    "files.autoSave": "afterDelay",
+    "editor.formatOnType": true,
+    "powershell.scriptAnalysis.settingsPath": "ScriptAnalyzerSettings.psd1"
+}
