@@ -3,7 +3,7 @@ $Modules = Get-Module -ListAvailable | Select-Object -Unique | Select-Object -Ex
 
 Register-ArgumentCompleter -ParameterName Application -CommandName Invoke-RedPen, New-PLXSConfig -ScriptBlock {
 	param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
-	$Modules | ForEach-Object {
+	$Modules | Where-Object { $_ -like "${wordToComplete}*" } | ForEach-Object {
 		New-Object System.Management.Automation.CompletionResult (
 			$_,
 			$_,
