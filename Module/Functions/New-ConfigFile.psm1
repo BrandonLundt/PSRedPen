@@ -1,9 +1,9 @@
 Function New-ConfigFile {
-	[cmdletbinding()]
+	[cmdletbinding(SupportsShouldProcess = $true)]
 	param(
 		[parameter( Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
-		[ValidateScript({	
+		[ValidateScript( {	
 				Import-Module $_ 
 				if ( (Get-Module $_).Count -ge 1) {
 					$true
@@ -25,12 +25,14 @@ Function New-ConfigFile {
 		Write-Verbose -Message ("ModuleBase is : " + $ModuleBase)
 		$Template = ($ModuleBase + "\Template\")
 		if ( -not (Test-Path $Template)) {
-			throw (Write-Error -Message "Application does not contain applicable templates.")
+			$PSCmdlet.ThrowTerminatingError( "Application does not contain applicable templates.")
 		}
 		elseif ( -not (Test-Path "$Template\PlasterManifest.xml")) {
-			throw (Write-Error -Message "Application does not contain applicable templates.")
-		}		
-		Invoke-Plaster -TemplatePath $Template -DestinationPath $Destination -NoLogo
+			$PSCmdlet.ThrowTerminatingError( "Application does not contain applicable templates.")
+		}
+		if ( $PSCmdlet.ShouldProcess( $Destination, "New File" ) ) {
+			Invoke-Plaster -TemplatePath $Template -DestinationPath $Destination -NoLogo
+		}#if should process
 	}#Process
 	end {
 		Remove-variable -Name ModuleBase, Template
